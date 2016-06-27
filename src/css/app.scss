@@ -1,0 +1,38 @@
+@import "base/_variable";
+@import "base/_placeholder";
+@import "base/_mixin";
+
+@import "framework/_grid";
+@import "framework/_layout";
+
+@import "component/_font";
+@import "component/_button";
+@import "component/_loading";
+@import "component/_slide";
+@import "component/_label";
+
+html {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: #000;
+  @include tablet {
+      font-size: 32px;
+  }
+  @include iphone6plus{
+      font-size: 22px;
+  }
+  @include iphone6 {
+      font-size: 20px;
+  }
+  @include iphone5 {
+      font-size: 17px;
+  }
+  @include android5inch {
+      font-size: 18.4px;
+  }
+}
+
+body {
+  margin: 0 0;
+}

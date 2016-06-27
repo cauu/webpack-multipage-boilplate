@@ -13,7 +13,7 @@ html-webpack-plugin插件，重中之重，webpack中生成HTML的插件，
 具体可以去这里查看https://www.npmjs.com/package/html-webpack-plugin
  */
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var entries = getEntry('src/js/pages/**/*.js', 'src/js/pages/');
+var entries = getEntry('src/js/page/**/*.js', 'src/js/page/');
 var chunks = Object.keys(entries);
 
 const debug = process.env.NODE_ENV !== 'production';
@@ -41,10 +41,10 @@ var config = {
               }
             },
             {
-                test: /\.css$|\.scss$/,
+                test: /\.scss$|\.css$/,
                 //配置css的抽取器、加载器。'-loader'可以省去
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader') 
-                //loader: ExtractTextPlugin.extract('style', 'css', 'sass')
+                // loader: ExtractTextPlugin.extract('style-loader', 'css-loader') 
+                loaders: ['style', 'css', 'sass']
             },
                 // test: /\.less$/,
                 // //配置less的抽取器、加载器。中间!有必要解释一下，
@@ -56,13 +56,17 @@ var config = {
                 //比如你配置，attrs=img:src img:data-src就可以一并处理data-src引用的资源了，就像下面这样
                 test: /\.html$/,
                 // loader: "html?attrs=img:src img:data-src"
-                loader: "html?-minimize"
+                loader: "html?-minimize&attrs[]=img:src&attrs[]=audio:src&attrs[]=source:src"
             }, 
             {
                 //文件加载器，处理文件静态资源
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: 'file-loader?name=./fonts/[name].[ext]'
             }, 
+            {
+              test: /\.(mp3|mp4|wav)?$/,
+              loader: 'file-loader?name=./audio/[name].[ext]'
+            },
             {
                 //图片加载器，雷同file-loader，更适合图片，可以将较小的图片转成base64，减少http请求
                 //如下配置，将小于8192byte的图片转成base64码
@@ -73,7 +77,8 @@ var config = {
     },
     plugins: [
         new webpack.ProvidePlugin({ //加载jq
-            $: 'jquery'
+            $: 'jquery',
+            jQuery: 'jquery'
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendors', // 将公共模块提取，生成名为`vendors`的chunk
@@ -106,20 +111,22 @@ var config = {
     ],
     //使用webpack-dev-server，提高开发效率
     devServer: {
-        contentBase: './dist/views',
+        contentBase: './dist/view/',
         host: 'localhost',
         port: 9090, //默认8080
+        historyApiFallback: true,
+        progress: true,
         inline: true, //可以监控js变化
         hot: true, //热启动
     }
 };
 
-var pages = Object.keys(getEntry('src/views/**/*.html', 'src/views/'));
+var pages = Object.keys(getEntry('src/view/**/*.html', 'src/view/'));
 
 pages.forEach(function(pathname) {
     var conf = {
-        filename: './views/' + pathname + '.html',
-        template: './src/views/' + pathname + '.html',
+        filename: './view/' + pathname + '.html',
+        template: './src/view/' + pathname + '.html',
         inject: false
     };
     if(pathname in config.entry) {

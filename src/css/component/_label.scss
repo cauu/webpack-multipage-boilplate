@@ -1,0 +1,28 @@
+.iu-label-qr {
+    margin: 40px auto;
+    height: 172px;
+    width: 172px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-image: url('../img/icon-qr.jpg');
+    @include responsive-md-break {
+        margin: 20px auto;
+        height: 129px;
+        width: 129px;
+    }
+}
+
+.iu-label-intro {
+    color: white;
+    .title {
+        text-align:left;
+        @extend .iu-title-sm;
+    }
+    .content {
+        text-align: left;
+        @extend .iu-text-md;
+        line-height: 1rem; 
+    }
+}
+
